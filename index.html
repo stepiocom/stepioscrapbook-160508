@@ -6,39 +6,188 @@
     <meta name="robots" content="noindex, nofollow, noarchive">
     <title>STEPIO // Workspace 160508</title>
     <style>
+        :root {
+            --bg-color: #0b0c10;
+            --text-main: #e2e8f0;
+            --text-muted: #64748b;
+            --accent: #00ff66;
+            --border-color: #1e293b;
+            --font-mono: 'Courier New', Courier, monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
-            background-color: #0b0c10;
-            color: #e2e8f0;
-            font-family: 'Courier New', Courier, monospace;
-            padding: 40px;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-mono);
             font-size: 13px;
             line-height: 1.6;
-        }
-        .container {
-            max-width: 800px;
-            border: 1px solid #1e293b;
             padding: 24px;
         }
-        h1 {
-            font-size: 16px;
-            color: #00ff66;
-            margin-bottom: 8px;
-            border-bottom: 1px solid #1e293b;
-            padding-bottom: 8px;
+
+        header {
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 16px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
         }
-        p {
-            color: #64748b;
+
+        .meta-group h1 {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .meta-group p {
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .lang-toggle {
+            display: flex;
+            gap: 8px;
+        }
+
+        .lang-btn {
+            background: none;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 4px 8px;
+            cursor: pointer;
+            font-family: var(--font-mono);
+            font-size: 11px;
+        }
+
+        .lang-btn:hover, .lang-btn.active {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+        }
+
+        .main-track {
+            border-right: 1px solid var(--border-color);
+            padding-right: 24px;
+        }
+
+        section {
+            margin-bottom: 32px;
+        }
+
+        h2 {
+            font-size: 13px;
+            color: var(--accent);
+            margin-bottom: 12px;
+        }
+
+        .ledger-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px dashed var(--border-color);
+        }
+
+        .ledger-label {
+            color: var(--text-muted);
+        }
+
+        .faq-block {
             margin-bottom: 16px;
         }
+
+        .faq-q {
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .faq-a {
+            color: var(--text-muted);
+            padding-left: 12px;
+            border-left: 1px solid var(--border-color);
+        }
+
+        /* Language visibility rules */
+        [data-lang] { display: none; }
+        body.lang-en [data-lang="en"],
+        body.lang-zh [data-lang="zh"],
+        body.lang-ja [data-lang="ja"],
+        body.lang-fr [data-lang="fr"] { display: block; }
     </style>
 </head>
-<body>
+<body class="lang-en">
 
-    <div class="container">
-        <h1>SYS//LOG::WORKSPACE-160508</h1>
-        <p>SECURE PORTAL SECURED // DIRECT LINK ACCESS ONLY</p>
-        <p>Your static file pipeline is now fully operational. You can paste your final document text or layout data directly inside this body tag via GitHub to update your client terminal instantly.</p>
+    <header>
+        <div class="meta-group">
+            <h1>SYS//LOG::WORKSPACE-160508</h1>
+            <p>DATA SOVEREIGN PRIVATE RECORD // UNINDEXED</p>
+        </div>
+        <div class="lang-toggle">
+            <button class="lang-btn active" onclick="setLang('en')">EN</button>
+            <button class="lang-btn" onclick="setLang('zh')">ZH</button>
+            <button class="lang-btn" onclick="setLang('ja')">JA</button>
+            <button class="lang-btn" onclick="setLang('fr')">FR</button>
+        </div>
+    </header>
+
+    <div class="grid-container">
+        <div class="main-track">
+            <section>
+                <h2>01 // Pipeline Status</h2>
+                <div class="ledger-row">
+                    <span class="ledger-label">Routing Layer:</span>
+                    <span class="ledger-value" style="color: var(--accent);">STATIC_ASSET_FLOW_ACTIVE</span>
+                </div>
+                <div class="ledger-row">
+                    <span class="ledger-label">Indexing Protocol:</span>
+                    <span class="ledger-value" style="color: #ff3366;">FORBIDDEN // NOINDEX</span>
+                </div>
+            </section>
+
+            <section>
+                <h2>02 // Workspace Parameters</h2>
+                <div data-lang="en"><p>This terminal establishes an unindexed repository for technical deliverables. Content served here is bounded by absolute data sovereignty protocols. No public records are retained.</p></div>
+                <div data-lang="zh"><p>本终端为技术交付物建立了一个未被索引的私密仓库。此处提供的内容受到绝对数据主权协议的保护。不保留任何公开记录。</p></div>
+                <div data-lang="ja"><p>この端末は、技術的な成果物のためのインデックス未登録のリリポジトリを確立します。このコンテンツは、絶対的なデータ主権プロトコルによって保護されています。</p></div>
+                <div data-lang="fr"><p>Ce terminal établit un référentiel privé non indexé pour les livrables techniques. Le contenu servi ici est protégé par des protocoles absolus de souveraineté des données.</p></div>
+            </section>
+        </div>
+
+        <div class="side-track">
+            <section>
+                <h2>03 // Governance</h2>
+                <div class="faq-block">
+                    <div class="faq-q" data-lang="en">Q: Intellectual Property Status?</div>
+                    <div class="faq-q" data-lang="zh">问：知识产权状态？</div>
+                    <div class="faq-q" data-lang="ja">Q: 知的財産のステータスは？</div>
+                    <div class="faq-q" data-lang="fr">Q: Statut de la propriété intellectuelle?</div>
+                    
+                    <div class="faq-a" data-lang="en">All structures and architectures remain under explicit sovereign developer rights until final transfer parameters are executed.</div>
+                    <div class="faq-a" data-lang="zh">在最终转移参数执行之前，所有结构和架构均保留在明确的独立开发人员权益下。</div>
+                    <div class="faq-a" data-lang="ja">最終的な移転パラメータが実行されるまで、すべての構造とアーキテクチャは明示的な開発者の権利下に留まります。</div>
+                    <div class="faq-a" data-lang="fr">Toutes les structures et architectures restent sous les droits explicites du développeur souverain jusqu'à l'exécution des paramètres de transfert finaux.</div>
+                </div>
+            </section>
+        </div>
     </div>
 
+    <script>
+        function setLang(langCode) {
+            document.body.className = 'lang-' + langCode;
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if(btn.textContent.toLowerCase() === langCode) btn.classList.add('active');
+            });
+        }
+    </script>
 </body>
 </html>
