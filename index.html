@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow, noarchive">
-    <title>STEPIO // Client Terminal</title>
+    <title>STEPIO // Client Vault</title>
     <style>
         :root {
             --bg-main: #ffffff;
@@ -15,173 +15,49 @@
             --accent-blue: #0284c7;
             --font-mono: 'Courier New', Courier, monospace;
         }
-
-        * { 
-            box-sizing: border-box; 
-            margin: 0; 
-            padding: 0; 
-        }
-
-        body { 
-            background-color: var(--bg-main); 
-            color: var(--text-main); 
-            font-family: var(--font-mono); 
-            font-size: 13px; 
-            line-height: 1.6; 
-            padding: 32px; 
-        }
-
-        header { 
-            border-bottom: 2px solid var(--text-main); 
-            padding-bottom: 16px; 
-            margin-bottom: 24px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: flex-start; 
-        }
-
-        .meta-title h1 { 
-            font-size: 16px; 
-            font-weight: bold; 
-            letter-spacing: -0.02em; 
-        }
-
-        .meta-title p { 
-            color: var(--text-muted); 
-            font-size: 11px; 
-            margin-top: 2px; 
-        }
-
-        .lang-toggle { 
-            display: flex; 
-            gap: 6px; 
-        }
-
-        .lang-btn { 
-            background: var(--bg-surface); 
-            border: 1px solid var(--border-color); 
-            color: var(--text-muted); 
-            padding: 4px 10px; 
-            cursor: pointer; 
-            font-family: var(--font-mono); 
-            font-size: 11px; 
-            font-weight: bold; 
-        }
-
-        .lang-btn.active { 
-            border-color: var(--text-main); 
-            color: var(--text-main); 
-            background: #e2e8f0; 
-        }
-
-        .workspace-layout { 
-            display: grid; 
-            grid-template-columns: 340px 1fr; 
-            gap: 32px; 
-            align-items: start; 
-        }
-
-        .ledger-sidebar { 
-            border-right: 1px solid var(--border-color); 
-            padding-right: 24px; 
-            height: calc(100vh - 120px); 
-            overflow-y: auto; 
-        }
-
-        .sidebar-section-title { 
-            font-size: 11px; 
-            text-transform: uppercase; 
-            color: var(--text-muted); 
-            margin-bottom: 12px; 
-            letter-spacing: 0.05em; 
-        }
-
-        .asset-card { 
-            display: block; 
-            padding: 12px; 
-            border: 1px solid var(--border-color); 
-            background: var(--bg-surface); 
-            color: inherit; 
-            margin-bottom: 12px; 
-            cursor: pointer; 
-        }
-
-        .asset-card:hover, .asset-card.active { 
-            background: #ffffff; 
-            border-color: var(--text-main); 
-            box-shadow: 4px 4px 0px var(--text-main); 
-        }
-
-        .asset-meta { 
-            display: flex; 
-            justify-content: space-between; 
-            font-size: 10px; 
-            color: var(--text-muted); 
-            margin-bottom: 4px; 
-        }
-
-        .asset-type-badge { 
-            text-transform: uppercase; 
-            font-weight: bold; 
-            color: var(--accent-blue); 
-        }
-
-        .asset-title { 
-            font-size: 13px; 
-            font-weight: bold; 
-        }
-
-        .viewport-stage { 
-            background: #ffffff; 
-            min-height: 500px; 
-        }
-
-        .extraction-box { 
-            background: #ffffff; 
-            border: 1px solid var(--text-main); 
-            padding: 16px; 
-            font-size: 14px; 
-            white-space: pre-wrap; 
-            margin-bottom: 16px; 
-            color: var(--text-main); 
-        }
-
-        .action-bar { 
-            display: flex; 
-            gap: 12px; 
-            margin-bottom: 24px; 
-        }
-
-        .btn { 
-            background: var(--text-main); 
-            color: #ffffff; 
-            border: none; 
-            padding: 8px 16px; 
-            font-family: var(--font-mono); 
-            font-size: 12px; 
-            cursor: pointer; 
-            font-weight: bold; 
-            text-decoration: none; 
-            display: inline-flex; 
-            align-items: center; 
-        }
-
-        .btn:hover { 
-            background: var(--accent-blue); 
-        }
-
-        .btn-secondary { 
-            background: transparent; 
-            color: var(--text-main); 
-            border: 1px solid var(--text-main); 
-        }
-
-        .btn-secondary:hover { 
-            background: var(--bg-surface); 
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background-color: var(--bg-main); color: var(--text-main); font-family: var(--font-mono); font-size: 13px; line-height: 1.6; padding: 32px; }
+        
+        .auth-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #ffffff; z-index: 9999; display: flex; justify-content: center; align-items: center; }
+        .auth-box { width: 400px; padding: 32px; border: 1px solid var(--text-main); box-shadow: 6px 6px 0px var(--text-main); background: var(--bg-surface); }
+        .auth-title { font-size: 14px; font-weight: bold; margin-bottom: 12px; text-transform: uppercase; }
+        .auth-input { width: 100%; padding: 10px; font-family: var(--font-mono); border: 1px solid var(--border-color); margin-bottom: 16px; font-size: 14px; }
+        
+        header { border-bottom: 2px solid var(--text-main); padding-bottom: 16px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: flex-start; }
+        .meta-title h1 { font-size: 16px; font-weight: bold; letter-spacing: -0.02em; }
+        .meta-title p { color: var(--text-muted); font-size: 11px; margin-top: 2px; }
+        .lang-toggle { display: flex; gap: 6px; }
+        .lang-btn { background: var(--bg-surface); border: 1px solid var(--border-color); color: var(--text-muted); padding: 4px 10px; cursor: pointer; font-family: var(--font-mono); font-size: 11px; font-weight: bold; }
+        .lang-btn.active { border-color: var(--text-main); color: var(--text-main); background: #e2e8f0; }
+        .workspace-layout { display: grid; grid-template-columns: 340px 1fr; gap: 32px; align-items: start; }
+        .ledger-sidebar { border-right: 1px solid var(--border-color); padding-right: 24px; height: calc(100vh - 120px); overflow-y: auto; }
+        .sidebar-section-title { font-size: 11px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px; letter-spacing: 0.05em; }
+        .asset-card { display: block; padding: 12px; border: 1px solid var(--border-color); background: var(--bg-surface); color: inherit; margin-bottom: 12px; cursor: pointer; }
+        .asset-card:hover, .asset-card.active { background: #ffffff; border-color: var(--text-main); box-shadow: 4px 4px 0px var(--text-main); }
+        .asset-meta { display: flex; justify-content: space-between; font-size: 10px; color: var(--text-muted); margin-bottom: 4px; }
+        .asset-type-badge { text-transform: uppercase; font-weight: bold; color: var(--accent-blue); }
+        .asset-title { font-size: 13px; font-weight: bold; }
+        .viewport-stage { background: #ffffff; min-height: 500px; }
+        .extraction-box { background: #ffffff; border: 1px solid var(--text-main); padding: 16px; font-size: 14px; white-space: pre-wrap; margin-bottom: 16px; color: var(--text-main); }
+        .action-bar { display: flex; gap: 12px; margin-bottom: 24px; }
+        .btn { background: var(--text-main); color: #ffffff; border: none; padding: 8px 16px; font-family: var(--font-mono); font-size: 12px; cursor: pointer; font-weight: bold; text-decoration: none; display: inline-flex; align-items: center; }
+        .btn:hover { background: var(--accent-blue); }
+        .btn-secondary { background: transparent; color: var(--text-main); border: 1px solid var(--text-main); padding: 8px 16px; cursor: pointer; font-family: var(--font-mono); font-size: 12px; font-weight: bold; }
+        .btn-secondary:hover { background: var(--bg-surface); }
+        .error-msg { color: #dc2626; font-size: 11px; margin-top: -8px; margin-bottom: 12px; display: none; }
     </style>
 </head>
 <body>
+
+    <div id="auth-gate" class="auth-overlay">
+        <div class="auth-box">
+            <div class="auth-title">// ENCRYPTED TERMINAL IDENTITY LOCK</div>
+            <p style="color: var(--text-muted); font-size: 11px; margin-bottom: 16px;">SECURE LOG IN REQUIRED FOR CURRENT WORKSPACE INTERFACE</p>
+            <input type="password" id="vault-password" class="auth-input" placeholder="Enter Workspace Passcode..." onkeydown="if(event.key==='Enter') verifyPasscode()">
+            <div id="auth-error" class="error-msg">[ACCESS DENIED] INVALID SIGNATURE PASSPHRASE</div>
+            <button class="btn" style="width: 100%;" onclick="verifyPasscode()">Authenticate Vault //</button>
+        </div>
+    </div>
 
     <header>
         <div class="meta-title">
@@ -201,12 +77,13 @@
             <div class="sidebar-section-title" id="sidebar-label">// Delivery Index</div>
             <div id="sidebar-list"></div>
         </div>
-
         <div class="viewport-stage" id="main-stage"></div>
     </div>
 
     <script src="data.js"></script>
     <script>
+        const VAULT_PASSCODE = "stepio160508"; 
+
         let currentLang = 'en';
         let currentAssetId = "";
 
@@ -216,6 +93,38 @@
             ja: { sub: "高度な配信パイプライン // データスクラップブック", side: "// 配信インデックス", copyBtn: "テキストをコピー", alertMsg: "クリーンなテキストがクリップボードにコピーされました。" },
             fr: { sub: "PIPELINE DE TRANSFERT AVANCÉ // ALBUM DE DONNÉES", side: "// Index des livrables", copyBtn: "Copier le texte", alertMsg: "Texte propre copié dans le presse-papiers." }
         };
+
+        function verifyPasscode() {
+            const input = document.getElementById('vault-password').value;
+            if (input === VAULT_PASSCODE) {
+                document.getElementById('auth-gate').style.display = 'none';
+                sessionStorage.setItem('vault_authenticated', 'true');
+                initTerminal();
+            } else {
+                document.getElementById('auth-error').style.display = 'block';
+                document.getElementById('vault-password').value = '';
+            }
+        }
+
+        if (sessionStorage.getItem('vault_authenticated') === 'true') {
+            document.getElementById('auth-gate').style.display = 'none';
+            window.onload = initTerminal;
+        }
+
+        function initTerminal() {
+            const host = window.location.hostname;
+            if (host.includes('.pages.dev') || host.includes('github.io')) {
+                const subDomain = host.split('.')[0];
+                if (subDomain.includes('-')) {
+                    const parts = subDomain.split('-');
+                    const workspaceId = parts[parts.length - 1];
+                    if (!isNaN(workspaceId)) {
+                        document.getElementById('client-title-heading').innerText = `SYS//LOG::WORKSPACE-${workspaceId}`;
+                    }
+                }
+            }
+            setLang('en');
+        }
 
         function setLang(langCode) {
             currentLang = langCode;
@@ -232,53 +141,42 @@
         function renderSidebar() {
             const listContainer = document.getElementById('sidebar-list');
             listContainer.innerHTML = "";
-            
             if(!clientWorkspaceData || clientWorkspaceData.length === 0) {
                 listContainer.innerHTML = "<div style='color:var(--text-muted); padding:12px;'>No files deployed yet.</div>";
                 return;
             }
-            
             clientWorkspaceData.forEach((item, index) => {
                 if(!currentAssetId && index === 0) currentAssetId = item.id;
-                
                 const card = document.createElement('div');
                 card.className = `asset-card ${item.id === currentAssetId ? 'active' : ''}`;
                 card.setAttribute('onclick', `selectAsset('${item.id}')`);
                 card.innerHTML = `
-                    <div class="asset-meta">
-                        <span>${item.date}</span>
-                        <span class="asset-type-badge">[${item.type}]</span>
-                    </div>
+                    <div class="asset-meta"><span>${item.date}</span><span class="asset-type-badge">[${item.type}]</span></div>
                     <div class="asset-title">${item.title[currentLang] || item.title['en']}</div>
                 `;
                 listContainer.appendChild(card);
             });
         }
 
-        function selectAsset(id) { 
-            currentAssetId = id; 
-            renderSidebar(); 
-            renderActiveAsset(); 
-        }
+        function selectAsset(id) { currentAssetId = id; renderSidebar(); renderActiveAsset(); }
 
         function renderActiveAsset() {
             const stage = document.getElementById('main-stage');
-            if(!clientWorkspaceData || clientWorkspaceData.length === 0) {
-                stage.innerHTML = "<h2>Awaiting First Delivery Pipe...</h2>";
-                return;
-            }
+            if(!clientWorkspaceData || clientWorkspaceData.length === 0) return;
             
             const item = clientWorkspaceData.find(a => a.id === currentAssetId);
             if(!item) return;
 
-            // Handle the action button dynamically based on external asset link availability
             let actionBtnMarkup = "";
             if (item.downloadUrl && item.downloadUrl !== "#" && item.downloadUrl !== "") {
-                actionBtnMarkup = `<a href="${item.downloadUrl}" target="_blank" class="btn">${item.downloadLabel || '// Download Asset'}</a>`;
+                actionBtnMarkup = `<a href="${item.downloadUrl}" target="_blank" class="btn">${item.downloadLabel || '// View Document'}</a>`;
             }
 
+            const contentBody = item.copyBoxContent[currentLang] || item.copyBoxContent['en'];
+            const boxTitle = item.copyBoxTitle[currentLang] || item.copyBoxTitle['en'];
+
             stage.innerHTML = `
-                <h2 style="font-size: 15px; margin-bottom: 8px;">${item.displayTitle[currentLang] || item.displayTitle['en']}</h2>
+                <h2 style="font-size: 15px; margin-bottom: 8px;">${item.title[currentLang] || item.title['en']}</h2>
                 <p style="color: var(--text-muted); margin-bottom: 16px;">${item.description[currentLang] || item.description['en']}</p>
                 
                 <div class="action-bar">
@@ -286,33 +184,17 @@
                     <button class="btn btn-secondary" onclick="copyText()">${translations[currentLang].copyBtn}</button>
                 </div>
 
-                <div class="sidebar-section-title">${item.copyBoxTitle[currentLang] || item.copyBoxTitle['en']}</div>
-                <div id="target-copy-box" class="extraction-box">${item.copyBoxContent[currentLang] || item.copyBoxContent['en']}</div>
+                <div class="sidebar-section-title">${boxTitle}</div>
+                <div id="target-copy-box" class="extraction-box">${contentBody}</div>
             `;
         }
 
+        if(document.getElementById('auth-gate').style.display === 'none') initTerminal();
+
         function copyText() {
             const txt = document.getElementById('target-copy-box').innerText;
-            navigator.clipboard.writeText(txt.trim()).then(() => {
-                alert(translations[currentLang].alertMsg);
-            });
+            navigator.clipboard.writeText(txt.trim()).then(() => alert(translations[currentLang].alertMsg));
         }
-
-        // Auto-extract and format workspace metadata headings dynamically from your Cloudflare routing path
-        const host = window.location.hostname;
-        if (host.includes('.pages.dev') || host.includes('github.io')) {
-            const subDomain = host.split('.')[0];
-            if (subDomain.includes('-')) {
-                const parts = subDomain.split('-');
-                const workspaceId = parts[parts.length - 1];
-                if (!isNaN(workspaceId)) {
-                    document.getElementById('client-title-heading').innerText = `SYS//LOG::WORKSPACE-${workspaceId}`;
-                }
-            }
-        }
-
-        // Initialize application instance
-        setLang('en');
     </script>
 </body>
 </html>
