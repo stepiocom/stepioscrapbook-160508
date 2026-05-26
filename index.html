@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow, noarchive">
-    <title>STEPIO // Client Delivery Hub</title>
+    <title>STEPIO // Client Terminal</title>
     <style>
         :root {
             --bg-main: #ffffff;
@@ -13,573 +13,305 @@
             --text-muted: #64748b;
             --border-color: #cbd5e1;
             --accent-blue: #0284c7;
-            --accent-green: #16a34a;
             --font-mono: 'Courier New', Courier, monospace;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
         }
 
-        body {
-            background-color: var(--bg-main);
-            color: var(--text-main);
-            font-family: var(--font-mono);
-            font-size: 13px;
-            line-height: 1.6;
-            padding: 32px;
+        body { 
+            background-color: var(--bg-main); 
+            color: var(--text-main); 
+            font-family: var(--font-mono); 
+            font-size: 13px; 
+            line-height: 1.6; 
+            padding: 32px; 
         }
 
-        header {
-            border-bottom: 2px solid var(--text-main);
-            padding-bottom: 16px;
-            margin-bottom: 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
+        header { 
+            border-bottom: 2px solid var(--text-main); 
+            padding-bottom: 16px; 
+            margin-bottom: 24px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: flex-start; 
         }
 
-        .meta-title h1 {
-            font-size: 16px;
-            font-weight: bold;
-            letter-spacing: -0.02em;
+        .meta-title h1 { 
+            font-size: 16px; 
+            font-weight: bold; 
+            letter-spacing: -0.02em; 
         }
 
-        .meta-title p {
-            color: var(--text-muted);
-            font-size: 11px;
-            margin-top: 2px;
+        .meta-title p { 
+            color: var(--text-muted); 
+            font-size: 11px; 
+            margin-top: 2px; 
         }
 
-        .lang-toggle {
-            display: flex;
-            gap: 6px;
+        .lang-toggle { 
+            display: flex; 
+            gap: 6px; 
         }
 
-        .lang-btn {
-            background: var(--bg-surface);
-            border: 1px solid var(--border-color);
-            color: var(--text-muted);
-            padding: 4px 10px;
-            cursor: pointer;
-            font-family: var(--font-mono);
-            font-size: 11px;
-            font-weight: bold;
-            transition: all 0.15s ease-in-out;
+        .lang-btn { 
+            background: var(--bg-surface); 
+            border: 1px solid var(--border-color); 
+            color: var(--text-muted); 
+            padding: 4px 10px; 
+            cursor: pointer; 
+            font-family: var(--font-mono); 
+            font-size: 11px; 
+            font-weight: bold; 
         }
 
-        .lang-btn:hover, .lang-btn.active {
-            border-color: var(--text-main);
-            color: var(--text-main);
-            background: #e2e8f0;
+        .lang-btn.active { 
+            border-color: var(--text-main); 
+            color: var(--text-main); 
+            background: #e2e8f0; 
         }
 
-        .workspace-layout {
-            display: grid;
-            grid-template-columns: 340px 1fr;
-            gap: 32px;
-            align-items: start;
+        .workspace-layout { 
+            display: grid; 
+            grid-template-columns: 340px 1fr; 
+            gap: 32px; 
+            align-items: start; 
         }
 
-        /* --- LEFT SIDEBAR: FILING & INDEX SYSTEM --- */
-        .ledger-sidebar {
-            border-right: 1px solid var(--border-color);
-            padding-right: 24px;
-            height: calc(100vh - 120px);
-            overflow-y: auto;
+        .ledger-sidebar { 
+            border-right: 1px solid var(--border-color); 
+            padding-right: 24px; 
+            height: calc(100vh - 120px); 
+            overflow-y: auto; 
         }
 
-        .sidebar-section-title {
-            font-size: 11px;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            margin-bottom: 12px;
-            letter-spacing: 0.05em;
+        .sidebar-section-title { 
+            font-size: 11px; 
+            text-transform: uppercase; 
+            color: var(--text-muted); 
+            margin-bottom: 12px; 
+            letter-spacing: 0.05em; 
         }
 
-        .asset-card {
-            display: block;
-            padding: 12px;
-            border: 1px solid var(--border-color);
-            background: var(--bg-surface);
-            text-decoration: none;
-            color: inherit;
-            margin-bottom: 12px;
-            cursor: pointer;
-            transition: all 0.15s ease-in-out;
+        .asset-card { 
+            display: block; 
+            padding: 12px; 
+            border: 1px solid var(--border-color); 
+            background: var(--bg-surface); 
+            color: inherit; 
+            margin-bottom: 12px; 
+            cursor: pointer; 
         }
 
-        .asset-card:hover, .asset-card.active {
-            background: #ffffff;
-            border-color: var(--text-main);
-            box-shadow: 4px 4px 0px var(--text-main);
+        .asset-card:hover, .asset-card.active { 
+            background: #ffffff; 
+            border-color: var(--text-main); 
+            box-shadow: 4px 4px 0px var(--text-main); 
         }
 
-        .asset-meta {
-            display: flex;
-            justify-content: space-between;
-            font-size: 10px;
-            color: var(--text-muted);
-            margin-bottom: 4px;
+        .asset-meta { 
+            display: flex; 
+            justify-content: space-between; 
+            font-size: 10px; 
+            color: var(--text-muted); 
+            margin-bottom: 4px; 
         }
 
-        .asset-type-badge {
-            text-transform: uppercase;
-            font-weight: bold;
-            color: var(--accent-blue);
+        .asset-type-badge { 
+            text-transform: uppercase; 
+            font-weight: bold; 
+            color: var(--accent-blue); 
         }
 
-        .asset-title {
-            font-size: 13px;
-            font-weight: bold;
+        .asset-title { 
+            font-size: 13px; 
+            font-weight: bold; 
         }
 
-        /* --- RIGHT PANEL: VIEWPORT HUB --- */
-        .viewport-stage {
-            background: #ffffff;
-            min-height: 500px;
+        .viewport-stage { 
+            background: #ffffff; 
+            min-height: 500px; 
         }
 
-        .stage-payload {
-            display: none;
+        .extraction-box { 
+            background: #ffffff; 
+            border: 1px solid var(--text-main); 
+            padding: 16px; 
+            font-size: 14px; 
+            white-space: pre-wrap; 
+            margin-bottom: 16px; 
+            color: var(--text-main); 
         }
 
-        .stage-payload.active {
-            display: block;
+        .action-bar { 
+            display: flex; 
+            gap: 12px; 
+            margin-bottom: 24px; 
         }
 
-        .media-container {
-            background: var(--bg-surface);
-            border: 1px dashed var(--border-color);
-            padding: 16px;
-            margin: 16px 0;
-            text-align: center;
+        .btn { 
+            background: var(--text-main); 
+            color: #ffffff; 
+            border: none; 
+            padding: 8px 16px; 
+            font-family: var(--font-mono); 
+            font-size: 12px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            text-decoration: none; 
+            display: inline-flex; 
+            align-items: center; 
         }
 
-        .video-wrapper {
-            position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
-            overflow: hidden;
-            background: #000;
-            margin-bottom: 16px;
+        .btn:hover { 
+            background: var(--accent-blue); 
         }
 
-        .video-wrapper iframe, .video-wrapper video {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
+        .btn-secondary { 
+            background: transparent; 
+            color: var(--text-main); 
+            border: 1px solid var(--text-main); 
         }
 
-        .graphic-preview {
-            max-width: 100%;
-            height: auto;
-            border: 1px solid var(--border-color);
-            margin-bottom: 12px;
-        }
-
-        .extraction-box {
-            background: #ffffff;
-            border: 1px solid var(--text-main);
-            padding: 16px;
-            font-size: 14px;
-            white-space: pre-wrap;
-            margin-bottom: 16px;
-            color: var(--text-main);
-        }
-
-        .action-bar {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 24px;
-        }
-
-        .btn {
-            background: var(--text-main);
-            color: #ffffff;
-            border: none;
-            padding: 8px 16px;
-            font-family: var(--font-mono);
-            font-size: 12px;
-            cursor: pointer;
-            font-weight: bold;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-        }
-
-        .btn:hover {
-            background: var(--accent-blue);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: var(--text-main);
-            border: 1px solid var(--text-main);
-        }
-
-        .btn-secondary:hover {
-            background: var(--bg-surface);
-        }
-
-        /* --- INTERACTIVE REVIEWS --- */
-        .feedback-annex {
-            margin-top: 40px;
-            border-top: 2px dashed var(--border-color);
-            padding-top: 24px;
-        }
-
-        .comment-history {
-            margin-top: 16px;
-            background: var(--bg-surface);
-            padding: 12px;
-            max-height: 200px;
-            overflow-y: auto;
-            border: 1px solid var(--border-color);
-        }
-
-        .comment-log-entry {
-            border-bottom: 1px dashed var(--border-color);
-            padding: 6px 0;
-            font-size: 12px;
-        }
-
-        .comment-input-area {
-            display: flex;
-            gap: 8px;
-            margin-top: 12px;
-        }
-
-        .comment-field {
-            flex-grow: 1;
-            padding: 8px;
-            font-family: var(--font-mono);
-            border: 1px solid var(--border-color);
-            font-size: 13px;
-        }
-
-        /* --- MULTI-LINGUAL DISPLAY ENGINE --- */
-        [data-lang] {
-            display: none;
-        }
-        
-        body.lang-en [data-lang="en"],
-        body.lang-zh [data-lang="zh"],
-        body.lang-ja [data-lang="ja"],
-        body.lang-fr [data-lang="fr"] {
-            display: block;
-        }
-        
-        body.lang-en .asset-card [data-lang-inline="en"],
-        body.lang-zh .asset-card [data-lang-inline="zh"],
-        body.lang-ja .asset-card [data-lang-inline="ja"],
-        body.lang-fr .asset-card [data-lang-inline="fr"] {
-            display: inline;
-        }
-        
-        .asset-card [data-lang-inline] {
-            display: none;
+        .btn-secondary:hover { 
+            background: var(--bg-surface); 
         }
     </style>
 </head>
-<body class="lang-en">
+<body>
 
     <header>
         <div class="meta-title">
-            <h1>SYS//LOG::ASSET_LEDGER_160508</h1>
-            <p data-lang="en">HIGH-LEVEL TRANSFER PIPELINE // UNINDEXED DATA ROOM</p>
-            <p data-lang="zh">高级交付流水线 // 未编制索引的数据空间</p>
-            <p data-lang="ja">高度な配信パイプライン // インデックス未登録のデータルーム</p>
-            <p data-lang="fr">PIPELINE DE TRANSFERT AVANCÉ // ESPACE DE DONNÉES NON INDEXÉ</p>
+            <h1 id="client-title-heading">SYS//LOG::CLIENT_WORKSPACE</h1>
+            <p id="sub-header-text">HIGH-LEVEL TRANSFER PIPELINE // DATA SCRAPBOOK</p>
         </div>
         <div class="lang-toggle">
-            <button class="lang-btn active" onclick="setLang('en')">EN</button>
-            <button class="lang-btn" onclick="setLang('zh')">ZH</button>
-            <button class="lang-btn" onclick="setLang('ja')">JA</button>
-            <button class="lang-btn" onclick="setLang('fr')">FR</button>
+            <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
+            <button class="lang-btn" id="btn-zh" onclick="setLang('zh')">ZH</button>
+            <button class="lang-btn" id="btn-ja" onclick="setLang('ja')">JA</button>
+            <button class="lang-btn" id="btn-fr" onclick="setLang('fr')">FR</button>
         </div>
     </header>
 
     <div class="workspace-layout">
-        
         <div class="ledger-sidebar">
-            <div class="sidebar-section-title">
-                <span data-lang="en">// Delivery Index</span>
-                <span data-lang="zh">// 交付物索引</span>
-                <span data-lang="ja">// 配信インデックス</span>
-                <span data-lang="fr">// Index des livrables</span>
-            </div>
-            
-            <div class="asset-card active" onclick="switchStage('asset-01', this)">
-                <div class="asset-meta">
-                    <span>2026-05-26</span>
-                    <span class="asset-type-badge">[VIDEO]</span>
-                </div>
-                <div class="asset-title">
-                    <span data-lang-inline="en">01 // Agentic Loops Explainer</span>
-                    <span data-lang-inline="zh">01 // 智能体循环讲解视频</span>
-                    <span data-lang-inline="ja">01 // エージェンティックループ解説</span>
-                    <span data-lang-inline="fr">01 // Explication des boucles agentielles</span>
-                </div>
-            </div>
-
-            <div class="asset-card" onclick="switchStage('asset-02', this)">
-                <div class="asset-meta">
-                    <span>2026-05-25</span>
-                    <span class="asset-type-badge">[GRAPHIC]</span>
-                </div>
-                <div class="asset-title">
-                    <span data-lang-inline="en">02 // Map: HBM Saturation</span>
-                    <span data-lang-inline="zh">02 // 图表：HBM 饱和度悖论</span>
-                    <span data-lang-inline="ja">02 // 図表：HBM飽和のパラドックス</span>
-                    <span data-lang-inline="fr">02 // Carte : Paradoxe de saturation HBM</span>
-                </div>
-            </div>
-
-            <div class="asset-card" onclick="switchStage('asset-03', this)">
-                <div class="asset-meta">
-                    <span>2026-05-24</span>
-                    <span class="asset-type-badge">[TEXT]</span>
-                </div>
-                <div class="asset-title">
-                    <span data-lang-inline="en">03 // Manifest: Property Rights</span>
-                    <span data-lang-inline="zh">03 // 宣言：合成资产产权</span>
-                    <span data-lang-inline="ja">03 // 宣言：合成アセットの所有権</span>
-                    <span data-lang-inline="fr">03 // Manifeste : Droits de propriété</span>
-                </div>
-            </div>
+            <div class="sidebar-section-title" id="sidebar-label">// Delivery Index</div>
+            <div id="sidebar-list"></div>
         </div>
 
-        <div class="viewport-stage">
-            
-            <div id="asset-01" class="stage-payload active">
-                <div data-lang="en">
-                    <h2 style="font-size: 15px; margin-bottom: 8px;">01 // Agentic Loops & Economic Calculation</h2>
-                    <p style="color: var(--text-muted); margin-bottom: 16px;">High-definition video deployment asset. Stream sample or download raw production tracking files below.</p>
-                </div>
-                <div data-lang="zh">
-                    <h2 style="font-size: 15px; margin-bottom: 8px;">01 // 智能体循环与经济计算</h2>
-                    <p style="color: var(--text-muted); margin-bottom: 16px;">高清晰度视频交付资产。可在下方在线预览或下载原始制作源文件。</p>
-                </div>
-                <div data-lang="ja">
-                    <h2 style="font-size: 15px; margin-bottom: 8px;">01 // エージェンティックループと経済計算</h2>
-                    <p style="color: var(--text-muted); margin-bottom: 16px;">高解像度ビデオ配信アセット。以下からサンプルを再生するか、生ファイルをダウンロードしてください。</p>
-                </div>
-                <div data-lang="fr">
-                    <h2 style="font-size: 15px; margin-bottom: 8px;">01 // Boucles agentielles et calcul économique</h2>
-                    <p style="color: var(--text-muted); margin-bottom: 16px;">Actif vidéo haute définition. Visionnez l'aperçu ou téléchargez les fichiers de production brute ci-dessous.</p>
-                </div>
-                
-                <div class="video-wrapper">
-                    <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
-                </div>
-
-                <div class="action-bar">
-                    <a href="#" class="btn" download>// Download MP4</a>
-                    <button class="btn btn-secondary" onclick="copyText('v-cap')">
-                        <span data-lang="en">Copy Text</span>
-                        <span data-lang="zh">复制文本</span>
-                        <span data-lang="ja">テキストをコピー</span>
-                        <span data-lang="fr">Copier le texte</span>
-                    </button>
-                </div>
-
-                <div class="sidebar-section-title">
-                    <span data-lang="en">Distribution Text Container</span>
-                    <span data-lang="zh">分发文本容器</span>
-                    <span data-lang="ja">配布用テキストコンテナ</span>
-                    <span data-lang="fr">Conteneur de texte de distribution</span>
-                </div>
-                <div id="v-cap" class="extraction-box">
-                    <span data-lang="en">[English Copy]: Strategic distribution text optimized for zero-style clipboard storage. Drag to select or use the button above to copy cleanly into your diary or blog layout.</span>
-                    <span data-lang="zh">[中文文本]: 专为无样式剪贴板优化的分发文本。拖动鼠标选择或点击上方按钮即可干净地复制到您的日志或博客布局中。</span>
-                    <span data-lang="ja">[日本語テキスト]: スタイル汚染のないクリップボード保存用に最適化されたテキスト。ドラッグして選択するか、上のボタンを使用してブログにきれいにコピーします。</span>
-                    <span data-lang="fr">[Texte en Français]: Texte de distribution optimisé pour un presse-papiers sans résidus de style. Glissez pour sélectionner ou utilisez le bouton pour copier proprement.</span>
-                </div>
-            </div>
-
-            <div id="asset-02" class="stage-payload">
-                <div data-lang="en">
-                    <h2 style="font-size: 15px; margin-bottom: 8px;">02 // Infomap: High-Bandwidth Memory Saturation Matrix</h2>
-                    <p style="color: var(--text-muted); margin-bottom: 16px;">Vector export illustration for physical asset tracking presentations.</p>
-                </div>
-                <div data-lang="zh">
-                    <h2 style="font-size: 15px; margin-bottom: 8px;">02 // 信息图表：高带宽内存（HBM）饱和度矩阵</h2>
-                    <p style="color: var(--text-muted); margin-bottom: 16px;">用于实体资产跟踪演示的矢量导出插图。</p>
-                </div>
-                <div data-lang="ja">
-                    <h2 style="font-size: 15px; margin-bottom: 8px;">02 // インフォマップ：高帯域幅メモリ飽和マトリクス</h2>
-                    <p style="color: var(--text-muted); margin-bottom: 16px;">物理アセット追跡プレゼンテーション用のベクターエクスポート図表。</p>
-                </div>
-                <div data-lang="fr">
-                    <h2 style="font-size: 15px; margin-bottom: 8px;">02 // Infographie : Matrice de saturation de la mémoire à haute bande passante</h2>
-                    <p style="color: var(--text-muted); margin-bottom: 16px;">Illustration d'exportation vectorielle pour les présentations de suivi des actifs physiques.</p>
-                </div>
-                
-                <div class="media-container">
-                    <img src="https://via.placeholder.com/800x450/f8fafc/0f172a?text=HBM+Saturation+Matrix+PNG" class="graphic-preview" alt="Deliverable Map">
-                </div>
-
-                <div class="action-bar">
-                    <a href="#" class="btn" download>// Download High-Res PNG</a>
-                    <button class="btn btn-secondary" onclick="copyText('g-cap')">
-                        <span data-lang="en">Copy Metadata</span>
-                        <span data-lang="zh">复制元数据</span>
-                        <span data-lang="ja">メタデータをコピー</span>
-                        <span data-lang="fr">Copier les métadonnées</span>
-                    </button>
-                </div>
-
-                <div class="sidebar-section-title">
-                    <span data-lang="en">Illustration Metadata Schema</span>
-                    <span data-lang="zh">图表元数据架构</span>
-                    <span data-lang="ja">図表メタデータスキーマ</span>
-                    <span data-lang="fr">Schéma des métadonnées de l'illustration</span>
-                </div>
-                <div id="g-cap" class="extraction-box">
-                    <span data-lang="en">[English Metadata]: Structural tracking notes regarding physical inference cost curves. Optimized for clipboard extraction.</span>
-                    <span data-lang="zh">[中文元数据]: 关乎实体推理成本曲线的结构化跟踪记录。针对剪贴板提取进行了优化。</span>
-                    <span data-lang="ja">[日本語メタデータ]: 物理的推論コスト曲線に関する構造化追跡ノート。コピー抽出用に最適化されています。</span>
-                    <span data-lang="fr">[Métadonnées en Français]: Notes de suivi structurel concernant les courbes de coût d'inférence physique. Optimisé pour l'extraction.</span>
-                </div>
-            </div>
-
-            <div id="asset-03" class="stage-payload">
-                <div data-lang="en">
-                    <h2 style="font-size: 15px; margin-bottom: 8px;">03 // Manifest: Institutional Design & Non-Human Identity</h2>
-                    <p style="color: var(--text-muted); margin-bottom: 16px;">Text payload asset documenting sovereign algorithmic property rights rules.</p>
-                </div>
-                <div data-lang="zh">
-                    <h2 style="font-size: 15px; margin-bottom: 8px;">03 // 宣言：制度设计与非人类身份（NHI）</h2>
-                    <p style="color: var(--text-muted); margin-bottom: 16px;">文本负载资产，记录主权算法产权规则。</p>
-                </div>
-                <div data-lang="ja">
-                    <h2 style="font-size: 15px; margin-bottom: 8px;">03 // 宣言：制度設計と非人間アイデンティティ（NHI）</h2>
-                    <p style="color: var(--text-muted); margin-bottom: 16px;">独自のアルゴリズム的財産権規則を記録したテキストアセット。</p>
-                </div>
-                <div data-lang="fr">
-                    <h2 style="font-size: 15px; margin-bottom: 8px;">03 // Manifeste : Design institutionnel et identité non humaine</h2>
-                    <p style="color: var(--text-muted); margin-bottom: 16px;">Actif textuel documentant les règles souveraines des droits de propriété algorithmiques.</p>
-                </div>
-
-                <div class="action-bar">
-                    <button class="btn" onclick="copyText('m-body')">
-                        <span data-lang="en">Copy Document Body</span>
-                        <span data-lang="zh">复制文件正文</span>
-                        <span data-lang="ja">本文をコピー</span>
-                        <span data-lang="fr">Copier le corps du document</span>
-                    </button>
-                </div>
-
-                <div class="sidebar-section-title">
-                    <span data-lang="en">Document Body</span>
-                    <span data-lang="zh">文件正文</span>
-                    <span data-lang="ja">ドキュメント本文</span>
-                    <span data-lang="fr">Corps du document</span>
-                </div>
-                <div id="m-body" class="extraction-box">
-                    <span data-lang="en">[English Manifest Block]: This module tracks explicit legal liability for continuous machine-agent production loops. Copying this text preserves structural indentation without formatting pollution.</span>
-                    <span data-lang="zh">[中文宣言文本]: 本模块跟踪机器智能体连续生产循环的明确法律责任。复制此文本可保留结构缩进，绝无排版格式污染。</span>
-                    <span data-lang="ja">[日本語宣言テキスト]: このモジュールは、連続的なマシンエージェント生産ループに対する明確な法的責任を追跡します。構造的なインデントを維持したままコピー可能です。</span>
-                    <span data-lang="fr">[Bloc du Manifeste en Français]: Ce module suit la responsabilité juridique explicite pour les boucles de production continues des agents machines. Conserve les retraits structurels.</span>
-                </div>
-            </div>
-
-            <div class="feedback-annex">
-                <div class="sidebar-section-title">
-                    <span data-lang="en">// Client Review & Comments</span>
-                    <span data-lang="zh">// 客户审阅与意见反馈</span>
-                    <span data-lang="ja">// クライアントレビュー＆コメント</span>
-                    <span data-lang="fr">// Révisions et commentaires client</span>
-                </div>
-                
-                <div class="comment-history" id="comment-box">
-                    <div class="comment-log-entry" style="color: var(--text-muted);">[SYSTEM LOG] Pipeline active. Feed initialized.</div>
-                </div>
-
-                <div class="comment-input-area">
-                    <input type="text" id="comment-input" class="comment-field" placeholder="...">
-                    <button class="btn" onclick="postComment()">
-                        <span data-lang="en">Submit Note</span>
-                        <span data-lang="zh">提交记录</span>
-                        <span data-lang="ja">ノートを送信</span>
-                        <span data-lang="fr">Soumettre</span>
-                    </button>
-                </div>
-            </div>
-
-        </div>
+        <div class="viewport-stage" id="main-stage"></div>
     </div>
 
+    <script src="data.js"></script>
     <script>
         let currentLang = 'en';
+        let currentAssetId = "";
 
-        // Language Switch Matrix Engine
+        const translations = {
+            en: { sub: "HIGH-LEVEL TRANSFER PIPELINE // DATA SCRAPBOOK", side: "// Delivery Index", copyBtn: "Copy Text Layout", alertMsg: "Clean text payload committed to clipboard." },
+            zh: { sub: "高级交付流水线 // 数据剪贴簿", side: "// 交付物索引", copyBtn: "复制文本内容", alertMsg: "干净的文本资产已成功复制到剪贴板。" },
+            ja: { sub: "高度な配信パイプライン // データスクラップブック", side: "// 配信インデックス", copyBtn: "テキストをコピー", alertMsg: "クリーンなテキストがクリップボードにコピーされました。" },
+            fr: { sub: "PIPELINE DE TRANSFERT AVANCÉ // ALBUM DE DONNÉES", side: "// Index des livrables", copyBtn: "Copier le texte", alertMsg: "Texte propre copié dans le presse-papiers." }
+        };
+
         function setLang(langCode) {
             currentLang = langCode;
-            document.body.className = 'lang-' + langCode;
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(`btn-${langCode}`).classList.add('active');
             
-            document.querySelectorAll('.lang-btn').forEach(btn => {
-                btn.classList.remove('active');
-                if(btn.textContent.toLowerCase() === langCode) {
-                    btn.classList.add('active');
+            document.getElementById('sub-header-text').innerText = translations[langCode].sub;
+            document.getElementById('sidebar-label').innerText = translations[langCode].side;
+            
+            renderSidebar();
+            renderActiveAsset();
+        }
+
+        function renderSidebar() {
+            const listContainer = document.getElementById('sidebar-list');
+            listContainer.innerHTML = "";
+            
+            if(!clientWorkspaceData || clientWorkspaceData.length === 0) {
+                listContainer.innerHTML = "<div style='color:var(--text-muted); padding:12px;'>No files deployed yet.</div>";
+                return;
+            }
+            
+            clientWorkspaceData.forEach((item, index) => {
+                if(!currentAssetId && index === 0) currentAssetId = item.id;
+                
+                const card = document.createElement('div');
+                card.className = `asset-card ${item.id === currentAssetId ? 'active' : ''}`;
+                card.setAttribute('onclick', `selectAsset('${item.id}')`);
+                card.innerHTML = `
+                    <div class="asset-meta">
+                        <span>${item.date}</span>
+                        <span class="asset-type-badge">[${item.type}]</span>
+                    </div>
+                    <div class="asset-title">${item.title[currentLang] || item.title['en']}</div>
+                `;
+                listContainer.appendChild(card);
+            });
+        }
+
+        function selectAsset(id) { 
+            currentAssetId = id; 
+            renderSidebar(); 
+            renderActiveAsset(); 
+        }
+
+        function renderActiveAsset() {
+            const stage = document.getElementById('main-stage');
+            if(!clientWorkspaceData || clientWorkspaceData.length === 0) {
+                stage.innerHTML = "<h2>Awaiting First Delivery Pipe...</h2>";
+                return;
+            }
+            
+            const item = clientWorkspaceData.find(a => a.id === currentAssetId);
+            if(!item) return;
+
+            // Handle the action button dynamically based on external asset link availability
+            let actionBtnMarkup = "";
+            if (item.downloadUrl && item.downloadUrl !== "#" && item.downloadUrl !== "") {
+                actionBtnMarkup = `<a href="${item.downloadUrl}" target="_blank" class="btn">${item.downloadLabel || '// Download Asset'}</a>`;
+            }
+
+            stage.innerHTML = `
+                <h2 style="font-size: 15px; margin-bottom: 8px;">${item.displayTitle[currentLang] || item.displayTitle['en']}</h2>
+                <p style="color: var(--text-muted); margin-bottom: 16px;">${item.description[currentLang] || item.description['en']}</p>
+                
+                <div class="action-bar">
+                    ${actionBtnMarkup}
+                    <button class="btn btn-secondary" onclick="copyText()">${translations[currentLang].copyBtn}</button>
+                </div>
+
+                <div class="sidebar-section-title">${item.copyBoxTitle[currentLang] || item.copyBoxTitle['en']}</div>
+                <div id="target-copy-box" class="extraction-box">${item.copyBoxContent[currentLang] || item.copyBoxContent['en']}</div>
+            `;
+        }
+
+        function copyText() {
+            const txt = document.getElementById('target-copy-box').innerText;
+            navigator.clipboard.writeText(txt.trim()).then(() => {
+                alert(translations[currentLang].alertMsg);
+            });
+        }
+
+        // Auto-extract and format workspace metadata headings dynamically from your Cloudflare routing path
+        const host = window.location.hostname;
+        if (host.includes('.pages.dev') || host.includes('github.io')) {
+            const subDomain = host.split('.')[0];
+            if (subDomain.includes('-')) {
+                const parts = subDomain.split('-');
+                const workspaceId = parts[parts.length - 1];
+                if (!isNaN(workspaceId)) {
+                    document.getElementById('client-title-heading').innerText = `SYS//LOG::WORKSPACE-${workspaceId}`;
                 }
-            });
-            
-            // Adjust input placeholders adaptively based on selected language layout
-            const inputEl = document.getElementById('comment-input');
-            if(langCode === 'en') inputEl.placeholder = "Enter note, change order, or parameter adjustment...";
-            if(langCode === 'zh') inputEl.placeholder = "输入修改意见、变更要求或参数调整明细...";
-            if(langCode === 'ja') inputEl.placeholder = "修正ノート、変更指示、またはパラメータ調整を入力...";
-            if(langCode === 'fr') inputEl.placeholder = "Saisissez une note, une demande de modification...";
+            }
         }
 
-        // Sub-navigation Stage Switch Engine
-        function switchStage(assetId, element) {
-            document.querySelectorAll('.stage-payload').forEach(p => p.classList.remove('active'));
-            document.getElementById(assetId).classList.add('active');
-            
-            document.querySelectorAll('.asset-card').forEach(c => c.classList.remove('active'));
-            element.classList.add('active');
-        }
-
-        // Native formattingless string extractor
-        function copyText(elementId) {
-            const container = document.getElementById(elementId);
-            // Extracts only the text visible under the currently active active lang switch
-            const visibleText = container.querySelector(`[data-lang="${currentLang}"]`) || container;
-            
-            navigator.clipboard.writeText(visibleText.innerText.trim()).then(() => {
-                alert(currentLang === 'en' ? "Clean text payload committed to clipboard." : 
-                      currentLang === 'zh' ? "干净的文本资产已成功复制到剪贴板。" :
-                      currentLang === 'ja' ? "クリーンなテキストがクリップボードにコピーされました。" : 
-                      "Texte propre copié dans le presse-papiers.");
-            });
-        }
-
-        // Real-time sandboxed comment verification tracker
-        function postComment() {
-            const field = document.getElementById('comment-input');
-            const txt = field.value.trim();
-            if(!txt) return;
-
-            const time = new Date().toISOString().split('T')[0] + " " + new Date().toTimeString().split(' ')[0];
-            const entry = document.createElement('div');
-            entry.className = 'comment-log-entry';
-            entry.innerHTML = `<strong>[${time}] NOTE //</strong> ${txt}`;
-            
-            const box = document.getElementById('comment-box');
-            box.appendChild(entry);
-            box.scrollTop = box.scrollHeight;
-            field.value = "";
-        }
-
-        // Initialize placeholders with standard baseline language values
+        // Initialize application instance
         setLang('en');
     </script>
 </body>
