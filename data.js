@@ -1,5 +1,14 @@
 const clientWorkspaceData = [
     {
+        "id": "a-1779847449086",
+        "date": "2026-05-27",
+        "type": "VLOG",
+        "title": {
+            "en": "Diary"
+        },
+        "payload": "The Trigger\nSource: IMF Note No. 2026/004: How Agentic AI Will Reshape Payments\n\nThe Diary Entry: The Ghost in the Settlement Layer\nI was reading through the IMF’s latest stance on Agentic AI, and it hit me—we are finally formalizing the \"Non-Human Identity.\" For years in Facilities Management, I dealt with \"dumb\" automation: thermostats that adjusted to occupancy or security gates that \n"
+    },
+    {
         "id": "a-1779847422142",
         "date": "2026-05-27",
         "type": "DIARY",
