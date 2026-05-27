@@ -1,84 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>STEPIO // Client Vault</title>
+    <title>STEPIO // SECURE CLIENT VIEW</title>
     <style>
-        :root { --main: #0f172a; --muted: #64748b; --border: #cbd5e1; }
-        body { font-family: 'Courier New', monospace; padding: 32px; color: var(--main); }
-        .layout { display: grid; grid-template-columns: 300px 1fr; gap: 40px; }
-        .asset-card { border: 1px solid var(--border); padding: 15px; margin-bottom: 10px; cursor: pointer; }
-        .asset-card:hover { border-color: var(--main); }
-        .viewport { padding: 20px; border: 1px solid var(--border); min-height: 400px; }
-        .btn { background: var(--main); color: white; padding: 8px 16px; border: none; cursor: pointer; margin-right: 10px; }
-        .lang-bar { margin-bottom: 20px; }
+        body { font-family: monospace; padding: 20px; max-width: 800px; }
+        .asset { border-bottom: 2px solid #000; margin-bottom: 20px; padding-bottom: 10px; }
     </style>
 </head>
 <body>
-
-<header>
-    <h1>SYS//LOG::WORKSPACE-160508</h1>
-    <div class="lang-bar" id="lang-bar">
-        <button onclick="setLang('en')">EN</button>
-        <button onclick="setLang('zh')">ZH</button>
-        <button onclick="setLang('ja')">JA</button>
-        <button onclick="setLang('fr')">FR</button>
+    <div id="login">
+        <h3>SECURE ACCESS</h3>
+        <input type="password" id="pass" placeholder="Enter Password">
+        <button onclick="unlock()">ACCESS</button>
     </div>
-</header>
-
-<div class="layout">
-    <div id="sidebar" class="sidebar"></div>
-    <div id="viewport" class="viewport">
-        <h2>Select an asset to view.</h2>
+    <div id="content" style="display:none;">
+        <h3>CLIENT 160508 // DAILY DISPATCH</h3>
+        <div id="data-view"></div>
     </div>
-</div>
 
-<script src="data.js"></script>
-<script>
-    let currentLang = 'en';
+    <script>
+        // REPLACE 'yourpassword' WITH YOUR CHOSEN PASSWORD
+        const SECRET = "yourpassword"; 
 
-    // Client-side translation engine
-    async function translate(text, lang) {
-        if (lang === 'en') return text;
-        try {
-            const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|${lang}`);
-            const data = await res.json();
-            return data.responseData.translatedText;
-        } catch { return text; }
-    }
+        function unlock() {
+            if(document.getElementById('pass').value === SECRET) {
+                document.getElementById('login').style.display = 'none';
+                document.getElementById('content').style.display = 'block';
+                loadData();
+            } else { alert("Access Denied"); }
+        }
 
-    function setLang(lang) {
-        currentLang = lang;
-        renderSidebar();
-    }
+        async function loadData() {
+            // This assumes data.js is in the same repo
+            const res = await fetch('data.js?t=' + Date.now()); 
+            const text = await res.text();
+            const jsonStr = text.replace('const clientWorkspaceData = ', '').replace(';', '');
+            const data = JSON.parse(jsonStr);
 
-    function renderSidebar() {
-        const sidebar = document.getElementById('sidebar');
-        sidebar.innerHTML = '';
-        // Sort by date (newest first)
-        [...clientWorkspaceData].sort((a,b) => new Date(b.date) - new Date(a.date)).forEach(item => {
-            const div = document.createElement('div');
-            div.className = 'asset-card';
-            div.innerHTML = `<strong>${item.date}</strong><br>[${item.type}] ${item.title}`;
-            div.onclick = () => renderAsset(item);
-            sidebar.appendChild(div);
-        });
-    }
-
-    async function renderAsset(item) {
-        const viewport = document.getElementById('viewport');
-        const translatedTitle = await translate(item.title, currentLang);
-        const translatedPayload = await translate(item.payload, currentLang);
-
-        viewport.innerHTML = `
-            <h2>${translatedTitle}</h2>
-            <p>Type: ${item.type}</p>
-            ${item.mediaUrl ? `<a href="${item.mediaUrl}" target="_blank" class="btn">// Open Media</a>` : ''}
-            <div style="margin-top:20px; white-space:pre-wrap;">${translatedPayload}</div>
-        `;
-    }
-
-    renderSidebar();
-</script>
+            const container = document.getElementById('data-view');
+            data.forEach(item => {
+                container.innerHTML += `
+                    <div class="asset">
+                        <h4>[${item.type}] ${item.title.en}</h4>
+                        <small>${item.date}</small>
+                        <p>${item.payload}</p>
+                    </div>`;
+            });
+        }
+    </script>
 </body>
 </html>
