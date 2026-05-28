@@ -1,30 +1,18 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>SCRAPBOOK</title>
-</head>
+<head><title>Scrapbook</title></head>
 <body>
     <input type="password" id="pass" placeholder="Password">
     <button onclick="unlock()">Enter</button>
     <div id="view"></div>
-
     <script src="data.js"></script>
     <script>
         function unlock() {
-            // Edit this password inside your GitHub file
-            if(document.getElementById('pass').value !== "123456789") {
-                return alert("Wrong Password");
-            }
-            
+            if(document.getElementById('pass').value !== "YOUR_SECRET_PASSWORD") return alert("Wrong");
             const view = document.getElementById('view');
             view.innerHTML = "";
-            
             clientWorkspaceData.forEach(item => {
-                view.innerHTML += `
-                    <div style="border-bottom:1px solid #ccc; padding:10px;">
-                        <h3>[${item.type}] ${item.title.en}</h3>
-                        <p>${item.payload}</p>
-                    </div>`;
+                view.innerHTML += `<div><h3>[${item.type}] ${item.title.en}</h3><p>${item.payload}</p><hr></div>`;
             });
         }
     </script>
