@@ -21,7 +21,6 @@
     </div>
 
     <script>
-        // REPLACE with your actual password
         const CORRECT_PASSWORD = "123456789";
 
         function checkPassword() {
@@ -37,33 +36,36 @@
 
         async function loadAndDisplay() {
             try {
-                // Using jsDelivr to bypass CORS and force the latest version
+                // Using jsDelivr as it is the most reliable way to get raw data
                 const url = 'https://cdn.jsdelivr.net/gh/stepiocom/stepioscrapbook-160508@main/data.js?t=' + Date.now();
-                
                 const response = await fetch(url, { cache: "no-store" });
                 const text = await response.text();
                 
-                // IMPORTANT: Log this to the console (F12) to see what is failing
-                console.log("DEBUG - Received content:", text);
-                
-                // Verify if the content looks like JSON
-                if (!text.includes('[')) {
-                    throw new Error("Content is not a valid list. Check URL.");
+                // Find where the array starts and ends
+                const start = text.indexOf('[');
+                const end = text.lastIndexOf(']');
+
+                if (start === -1 || end === -1) {
+                    throw new Error("Data format error. Start: " + start + ", End: " + end);
                 }
 
-                const jsonString = text.substring(text.indexOf('['), text.lastIndexOf(']') + 1);
+                // Slice out the pure array string
+                const jsonString = text.substring(start, end + 1);
                 const data = JSON.parse(jsonString);
                 
                 renderData(data);
             } catch (e) {
-                document.getElementById('post-container').innerText = "Error loading content: " + e.message;
-                console.error("DEBUG ERROR:", e);
+                document.getElementById('post-container').innerText = "Error loading: " + e.message;
+                console.error("DEBUG:", e);
             }
         }
 
         function renderData(data) {
             const container = document.getElementById('post-container');
             container.innerHTML = ''; 
+
+            // Ensure data is an array
+            if (!Array.isArray(data)) data = [];
 
             data.sort((a, b) => b.id - a.id).forEach(item => {
                 const date = new Date(item.id).toLocaleDateString();
