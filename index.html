@@ -33,7 +33,7 @@
         async function loadAndDisplay() {
             try {
                 // Using a timestamp '?t=' forces the browser to ignore old cache
-                const url = 'https://raw.githubusercontent.com/stepiocom/stepioscrapbook-160508/main/data.js?t=' + Date.now();
+                const url = 'https://raw.githubusercontent.com/stepiocom/stepioscrapbook-160508/master/data.js?t=' + Date.now();
                 const response = await fetch(url);
                 const text = await response.text();
                 
