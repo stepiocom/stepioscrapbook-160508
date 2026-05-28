@@ -1,7 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Client Portal</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .post-item { border-bottom: 1px solid #ccc; padding: 15px 0; }
+    </style>
 </head>
 <body>
 
@@ -12,12 +17,12 @@
 
     <div id="content-screen" style="display:none;">
         <h1>Your Updates</h1>
-        <div id="post-container">Loading data...</div>
+        <div id="post-container">Loading...</div>
     </div>
 
     <script>
         // REPLACE with your actual password
-        const CORRECT_PASSWORD = "123456789";
+        const CORRECT_PASSWORD = "your_secret_password_here";
 
         function checkPassword() {
             const input = document.getElementById('password-input').value;
@@ -32,31 +37,37 @@
 
         async function loadAndDisplay() {
             try {
-                // Using a timestamp '?t=' forces the browser to ignore old cache
-                const url = 'https://raw.githubusercontent.com/stepiocom/stepioscrapbook-160508/main/data.js?t=' + Date.now();
+                // Using jsDelivr CDN to bypass CORS issues
+                const url = 'https://cdn.jsdelivr.net/gh/stepiocom/stepioscrapbook-160508@main/data.js?t=' + Date.now();
                 const response = await fetch(url);
                 const text = await response.text();
                 
-                // Extract only the JSON array part
+                console.log("Raw response from CDN:", text);
+                
+                // Extract JSON array
                 const jsonString = text.substring(text.indexOf('['), text.lastIndexOf(']') + 1);
                 const data = JSON.parse(jsonString);
                 
-                const container = document.getElementById('post-container');
-                container.innerHTML = ''; 
-
-                // Sort by ID (newest first)
-                data.sort((a, b) => b.id - a.id).forEach(item => {
-                    const date = new Date(item.id).toLocaleDateString();
-                    container.innerHTML += `
-                        <div style="border-bottom: 1px solid #ccc; padding: 10px 0;">
-                            <h3>${item.title.en} (${date})</h3>
-                            <p>${item.payload}</p>
-                        </div>
-                    `;
-                });
+                renderData(data);
             } catch (e) {
                 document.getElementById('post-container').innerText = "Error loading content: " + e.message;
+                console.error("DEBUG ERROR:", e);
             }
+        }
+
+        function renderData(data) {
+            const container = document.getElementById('post-container');
+            container.innerHTML = ''; 
+
+            data.sort((a, b) => b.id - a.id).forEach(item => {
+                const date = new Date(item.id).toLocaleDateString();
+                container.innerHTML += `
+                    <div class="post-item">
+                        <h3>${item.title.en} (${date})</h3>
+                        <p>${item.payload}</p>
+                    </div>
+                `;
+            });
         }
     </script>
 </body>
