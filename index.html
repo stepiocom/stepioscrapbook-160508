@@ -1,37 +1,15 @@
 <!DOCTYPE html>
 <html>
 <body>
-    <input type="password" id="pass" placeholder="Password">
-    <button onclick="load()">Enter</button>
+    <input type="password" id="pass" placeholder="Password"><button onclick="show()">Enter</button>
     <div id="view"></div>
-    <div id="debug" style="color:red; font-size: 12px; margin-top: 20px;"></div>
-
+    <script src="data.js"></script>
     <script>
-        async function load() {
-            const debug = document.getElementById('debug');
-            const secret = "123456789"; // CHANGE THIS
-            if(document.getElementById('pass').value !== secret) return alert("Wrong");
-            
-            debug.innerText = "Fetching data...";
-            try {
-                // The '?t=' + Date.now() forces the browser to get the freshest data.js
-                const response = await fetch('data.js?t=' + Date.now());
-                const text = await response.text();
-                
-                debug.innerText = "Parsing...";
-                const jsonStr = text.substring(text.indexOf('['), text.lastIndexOf(']') + 1);
-                const data = JSON.parse(jsonStr);
-                
-                debug.innerText = "Rendering...";
-                const view = document.getElementById('view');
-                view.innerHTML = ""; 
-                data.forEach(a => {
-                    view.innerHTML += `<div><h3>[${a.type}] ${a.title.en}</h3><p>${a.payload}</p><hr></div>`;
-                });
-                debug.innerText = "Loaded successfully.";
-            } catch(e) { 
-                debug.innerText = "Error: " + e.message + " | Raw text starts with: " + text.substring(0, 50); 
-            }
+        function show() {
+            if(document.getElementById('pass').value !== "123456789") return alert("Wrong");
+            clientWorkspaceData.forEach(a => {
+                document.getElementById('view').innerHTML += `<h3>[${a.type}] ${a.title.en}</h3><p>${a.payload}</p><hr>`;
+            });
         }
     </script>
 </body>
