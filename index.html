@@ -1,18 +1,68 @@
 <!DOCTYPE html>
 <html>
-<head><title>Scrapbook</title></head>
+<head>
+    <title>Client Portal</title>
+</head>
 <body>
-    <input type="password" id="pass" placeholder="Password">
-    <button onclick="unlock()">Enter</button>
-    <div id="view"></div>
-    <script src="data.js"></script>
+
+    <div id="login-screen">
+        <input type="password" id="password-input" placeholder="Enter Password">
+        <button onclick="checkPassword()">Enter</button>
+    </div>
+
+    <div id="content-screen" style="display:none;">
+        <h1>Your Updates</h1>
+        <div id="post-container">Loading...</div>
+    </div>
+
     <script>
-        function unlock() {
-            if(document.getElementById('pass').value !== "YOUR_SECRET_PASSWORD") return alert("Wrong");
-            const view = document.getElementById('view');
-            view.innerHTML = "";
-            clientWorkspaceData.forEach(item => {
-                view.innerHTML += `<div><h3>[${item.type}] ${item.title.en}</h3><p>${item.payload}</p><hr></div>`;
+        // Update this to your actual password
+        const CORRECT_PASSWORD = "123456789";
+
+        function checkPassword() {
+            const input = document.getElementById('password-input').value;
+            if (input === CORRECT_PASSWORD) {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('content-screen').style.display = 'block';
+                loadAndDisplay(); // Fetch the data only AFTER successful login
+            } else {
+                alert("Incorrect Password");
+            }
+        }
+
+        async function loadAndDisplay() {
+            try {
+                // Fetch the data.js file
+                const response = await fetch('https://raw.githubusercontent.com/stepiocom/stepioscrapbook-160508/main/data.js?t=' + Date.now());
+                const text = await response.text();
+                
+                // Strip the variable name to get the pure JSON array
+                const jsonString = text.substring(text.indexOf('['), text.lastIndexOf(']') + 1);
+                const data = JSON.parse(jsonString);
+                
+                renderData(data);
+            } catch (e) {
+                document.getElementById('post-container').innerText = "Error loading content.";
+            }
+        }
+
+        function renderData(data) {
+            const container = document.getElementById('post-container');
+            container.innerHTML = ''; 
+
+            // Sort by ID (Date.now()) descending (newest first)
+            const sortedData = data.sort((a, b) => b.id - a.id);
+
+            sortedData.forEach(item => {
+                const date = new Date(item.id).toLocaleDateString();
+                const postElement = document.createElement('div');
+                postElement.style.borderBottom = "1px solid #ccc";
+                postElement.style.padding = "10px 0";
+                postElement.innerHTML = `
+                    <h3>${item.title.en} (${date})</h3>
+                    <p>${item.payload}</p>
+                `;
+                container.appendChild(postElement);
             });
         }
     </script>
